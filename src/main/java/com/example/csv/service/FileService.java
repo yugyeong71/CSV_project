@@ -1,49 +1,31 @@
 package com.example.csv.service;
 
+import com.example.csv.common.CSVHelper;
 import com.example.csv.config.File;
 import com.example.csv.repository.FileRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
-import java.util.UUID;
+import java.util.List;
 
-@RequiredArgsConstructor
 @Service
 public class FileService {
 
-    @Value("${file.dir}")
-    private String fileDir;
+    @Autowired FileRepository repository;
 
-    private final FileRepository fileRepository;
-
-    public Long saveFile(MultipartFile files) throws IOException{
-        if(files.isEmpty()){
-            return null;
+    @Transactional
+    public void save(MultipartFile file) { // CSV 데이터를 DB에 저장
+        try {
+            List<File> fileUploads = CSVHelper.csvFiles(file.getInputStream());
+            repository.saveAll(fileUploads);
+        } catch (IOException e) { // 예외처리 : 데이터 저장에 실패했을 경우
+            throw new RuntimeException("fail to store csv data: " + e.getMessage());
         }
+    }
 
-        String origName = files.getOriginalFilename();
-
-        String uuid = UUID.randomUUID().toString();
-
-        String extension = origName.substring(origName.lastIndexOf("."));
-
-        String savedName = uuid + extension;
-
-        String savedPath = fileDir + savedName;
-
-        File file = File.builder()
-                .orgNm(origName)
-                .savedNm(savedName)
-                .savedPath(savedPath)
-                .build();
-
-        files.transferTo(new File(savedPath));
-
-        File savedFile = fileRepository.save(file);
-
-        return savedFile.getId();
+    public List<File> getAllTutorials() { // DB에서 데이터를 읽고 반환
+        return repository.findAll();
     }
 }

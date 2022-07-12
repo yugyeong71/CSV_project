@@ -1,34 +1,29 @@
 package com.example.csv.config;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
-@Getter
-@NoArgsConstructor
+@Table(name = "fileUpload") // DB 테이블명
+@Getter @NoArgsConstructor
 public class File {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Id
+    @Column(name = "id")
+    private Integer id;
 
-    private String orgNm;
+    @Column(name = "city")
+    private String city;
 
-    private String savedNm;
+    @Column(name = "province")
+    private String province;
 
-    private String savedPath;
-
-    @Builder
-    public File(Long id, String orgNm, String savedNm, String savedPath){
+    public File(Integer id, String city, String province) {
         this.id = id;
-        this.orgNm = orgNm;
-        this.savedNm = savedNm;
-        this.savedPath = savedPath;
+        this.city = city;
+        this.province = province;
     }
+
 }
