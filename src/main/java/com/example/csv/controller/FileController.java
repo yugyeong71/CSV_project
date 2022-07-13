@@ -40,25 +40,17 @@ public class FileController {
             }
         }
 
-        message = "Please upload a csv file!";
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(message));
-    }
-
-    @GetMapping("/fileUploads") // 업로드 된 CSV 내용 조회
-    public ResponseEntity<List<File>> getAllTutorials() {
-        List<File> fileUploads = fileService.getAllTutorials();
-
-        return new ResponseEntity<>(fileUploads, HttpStatus.OK);
     }
 
     @GetMapping("/export/excel") // Excel 파일로 다운로드
     public void exportToExcel(HttpServletResponse response) throws IOException{
-        response.setContentType("application/octet-stream");
-        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        response.setContentType("application/octet-stream"); // Excel 타입
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss"); // 다운로드 받은 날짜 및 시간
         String currentDateTime = dateFormatter.format(new Date());
 
         String headerKey = "Content-Disposition";
-        String headerValue = "attachment; filename=newZones_" + currentDateTime + ".xlsx";
+        String headerValue = "attachment; filename = newZones_" + currentDateTime + ".xlsx"; // 파일명 설정
         response.setHeader(headerKey, headerValue);
 
         List<File> fileUploads = fileService.getAllTutorials();
@@ -66,6 +58,11 @@ public class FileController {
         ExcelExporter excelExporter = new ExcelExporter(fileUploads);
 
         excelExporter.export(response);
+    }
+
+    @GetMapping("/download")
+    public String test() {
+        return "/downloadFile";
     }
 
 }

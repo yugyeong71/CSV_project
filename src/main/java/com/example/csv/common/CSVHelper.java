@@ -19,15 +19,15 @@ public class CSVHelper { // Apache commons csv 를 사용하여 파일 읽고 �
     }
 
     public static List<File> csvFiles(InputStream is) {
-        try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-             CSVParser csvParser = new CSVParser(fileReader,
+        try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(is, "UTF-8")); // 글씨 깨짐 방지
+             CSVParser csvParser = new CSVParser(fileReader, // CSVParser : 구문 분석
                      CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim());) {
 
             List<File> fileUploads = new ArrayList<File>();
 
             Iterable<CSVRecord> csvRecords = csvParser.getRecords();
 
-            for (CSVRecord csvRecord : csvRecords) {
+            for (CSVRecord csvRecord : csvRecords) { // csvRecords 에서 객체를 하나씩 꺼내서 csvRecord 에 값을 넣어준다
                 File fileUpload = new File(
                         Integer.parseInt(csvRecord.get("Id")),
                         csvRecord.get("City"),
@@ -35,8 +35,10 @@ public class CSVHelper { // Apache commons csv 를 사용하여 파일 읽고 �
                 );
                 fileUploads.add(fileUpload);
             }
+
             return fileUploads;
-        } catch (IOException e) {
+
+        } catch (IOException e) { // 예외처리 : CSV 분석 실패
             throw new RuntimeException(e.getMessage());
         }
     }

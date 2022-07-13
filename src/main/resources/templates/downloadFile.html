@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        body {
+            min-height: 100vh;
+            background: linear-gradient(to top right, #efeff0 0%, #efeff0 100%);
+        }
+
+        .input-form {
+            max-width: 400px;
+
+            margin-top: 70px;
+            padding: 32px;
+
+            background: #fff;
+            -webkit-border-radius: 10px;
+            -moz-border-radius: 10px;
+            border-radius: 10px;
+            -webkit-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+            -moz-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+            box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15)
+        }
+        .h4, h4 {
+            font-size: 1.3rem;
+        }
+        .btn-color {
+            color: #fff;
+            background-color: #a3a8affc;
+            border-color: #a3a8affc;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="input-form-backgroud row">
+        <div class="input-form col-md-6 mx-auto">
+            <h4 class="mb-3">파일 다운로드</h4>
+
+                <div class="mb-4">
+                    <a th:href="@{/export/excel}">
+                        <button class="btn btn-color btn-lg btn-block" type="submit">다운로드</button>
+                    </a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</body>
+</html>
